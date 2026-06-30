@@ -111,6 +111,43 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+/* menú de notificaciones */
+    var toggleNotif = document.getElementById('notifMenuToggle');
+    var menuNotif = document.getElementById('notifDropdown');
+  
+    if (toggleNotif && menuNotif) {
+      toggleNotif.addEventListener('click', function (evento) {
+        evento.stopPropagation();
+        var abierto = menuNotif.classList.toggle('show');
+        toggleNotif.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+  
+        // si el menú de perfil está abierto, lo cerramos
+        if (menuPerfil) {
+          menuPerfil.classList.remove('show');
+          if (toggleMenuPerfil) toggleMenuPerfil.setAttribute('aria-expanded', 'false');
+        }
+      });
+  
+      document.addEventListener('click', function (evento) {
+        if (!menuNotif.contains(evento.target) && evento.target !== toggleNotif) {
+          menuNotif.classList.remove('show');
+          toggleNotif.setAttribute('aria-expanded', 'false');
+        }
+      });
+  
+      menuNotif.addEventListener('click', function (evento) {
+        evento.stopPropagation();
+      });
+    }
+  
+    if (toggleMenuPerfil && menuPerfil) {
+      toggleMenuPerfil.addEventListener('click', function () {
+        if (menuNotif) {
+          menuNotif.classList.remove('show');
+          if (toggleNotif) toggleNotif.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
 
   /* -----------------------------------------------------------
       VALIDACIÓN DEL FORMULARIO DE REGISTRO
@@ -188,6 +225,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (formValido) {
         mostrarFeedback(feedbackRegistro, 'success',
           '✓ ¡Cuenta creada con éxito! Ahora podés completar tu perfil gamer.');
+          setTimeout(function () {
+            window.location.href = 'login.html';
+          }, 1200);
       } else {
         mostrarFeedback(feedbackRegistro, 'error',
           'Hay datos sin completar correctamente. Revisá los campos en rojo.');
